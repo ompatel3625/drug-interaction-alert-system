@@ -10,55 +10,47 @@
 </head>
 <body>
 
-    <!-- Upload Section -->
-    <div class="container">
-        <h1>AI Drug Interaction Checker</h1>
-
-        <input type="file" id="imageInput" accept="image/*" />
-
-        <button onclick="checkInteractions()">Check Safety</button>
-
-        <!-- Loading Indicator -->
-        <div id="loading" class="loading" style="display: none;">
-            Analyzing prescription, please wait...
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">AI Checker</div>
+        <div class="nav-buttons">
+            <button class="btn-outline">Log in</button>
+            <button class="btn-primary">Get started</button>
         </div>
-    </div>
+    </nav>
 
-    <!-- Results Section -->
-    <div id="results" class="container results" style="display: none;">
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Build something reliable</h1>
+        <p>Analyze prescriptions and drug interactions using AI</p>
 
-        <h2>Analysis Results</h2>
+        <!-- Input Card -->
+        <div class="input-card">
 
-        <div>
-            <h3>Detected Medicines</h3>
-            <ul id="medicineList"></ul>
+            <!-- Description Input -->
+            <textarea 
+                id="description"
+                placeholder="Enter your query regarding the prescribed medicines"
+            ></textarea>
+
+            <!-- File Upload -->
+            <label class="file-upload">
+                <input type="file" id="imageInput" accept="image/*" hidden />
+                Upload Prescription Image
+            </label>
+
+            <!-- Action Button -->
+           <button class="analyze-btn" onclick="checkInteractions()">
+             Check Safety
+            </button>
+
         </div>
+    </section>
 
-        <!-- Risk Banner -->
-        <div id="riskBanner" class="risk-banner">
-            <!-- Filled dynamically -->
-        </div>
-
-        <!-- Explanation -->
-        <div>
-            <h3>Explanation</h3>
-            <p id="alertMessage"></p>
-        </div>
-
-        <!-- Alternatives -->
-        <div id="alternativesSection" style="display: none;">
-            <h3>Suggested Alternatives</h3>
-            <ul id="alternativesList"></ul>
-        </div>
-
-    </div>
-
-    <!-- Footer Disclaimer -->
+    <!-- Footer -->
     <footer>
-        AI output for educational purposes only. Always verify with a doctor.
+        AI output is for educational purposes only. Always consult a doctor.
     </footer>
 
-    <!-- Link JavaScript -->
-    <script src="app.js"></script>
 </body>
 </html>

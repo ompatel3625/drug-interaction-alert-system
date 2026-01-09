@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Drug Interaction Checker</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Upload Section -->
+    <div class="container">
+        <h1>AI Drug Interaction Checker</h1>
+
+        <input type="file" id="imageInput" accept="image/*" />
+
+        <button onclick="checkInteractions()">Check Safety</button>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            Analyzing prescription, please wait...
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="container results" style="display: none;">
+
+        <h2>Analysis Results</h2>
+
+        <div>
+            <h3>Detected Medicines</h3>
+            <ul id="medicineList"></ul>
+        </div>
+
+        <!-- Risk Banner -->
+        <div id="riskBanner" class="risk-banner">
+            <!-- Filled dynamically -->
+        </div>
+
+        <!-- Explanation -->
+        <div>
+            <h3>Explanation</h3>
+            <p id="alertMessage"></p>
+        </div>
+
+        <!-- Alternatives -->
+        <div id="alternativesSection" style="display: none;">
+            <h3>Suggested Alternatives</h3>
+            <ul id="alternativesList"></ul>
+        </div>
+
+    </div>
+
+    <!-- Footer Disclaimer -->
+    <footer>
+        AI output for educational purposes only. Always verify with a doctor.
+    </footer>
+
+    <!-- Link JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

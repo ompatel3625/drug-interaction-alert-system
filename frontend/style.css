@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 6px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+input[type="file"] {
+    display: block;
+    margin: 20px auto;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1e4ed8;
+}
+
+.loading {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Risk Banner */
+.risk-banner {
+    margin: 20px 0;
+    padding: 15px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.risk-green {
+    background-color: #16a34a;
+}
+
+.risk-yellow {
+    background-color: #ca8a04;
+}
+
+.risk-orange {
+    background-color: #ea580c;
+}
+
+.risk-red {
+    background-color: #dc2626;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 12px;
+    color: #555;
+}

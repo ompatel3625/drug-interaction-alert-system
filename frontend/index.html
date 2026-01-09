@@ -17,8 +17,18 @@
             </svg>
             <span class="logo-text">PharmaCheck<span class="logo-accent">AI</span></span>
         </div>
-        <div class="nav-status">
-            <span class="status-dot"></span> System Operational
+        <div class="nav-controls">
+            <!-- New: Language Selector -->
+            <select id="languageSelect" class="lang-select">
+                <option value="English">English</option>
+                <option value="Hindi">Hindi (हिंदी)</option>
+                <option value="Spanish">Spanish (Español)</option>
+                <option value="French">French (Français)</option>
+                <option value="German">German (Deutsch)</option>
+            </select>
+            <div class="nav-status">
+                <span class="status-dot"></span> System Operational
+            </div>
         </div>
     </nav>
 
@@ -48,10 +58,32 @@
                 </div>
             </div>
 
+            <!-- New: Patient Conditions Toggles -->
+            <div class="form-group">
+                <label>Special Patient Conditions (Safety Check)</label>
+                <div class="conditions-grid">
+                    <label class="checkbox-card">
+                        <input type="checkbox" name="condition" value="Pregnancy/Breastfeeding">
+                        <span class="check-label"><i class="fas fa-baby-carriage"></i> Pregnancy</span>
+                    </label>
+                    <label class="checkbox-card">
+                        <input type="checkbox" name="condition" value="Elderly (65+)">
+                        <span class="check-label"><i class="fas fa-user-clock"></i> Elderly (65+)</span>
+                    </label>
+                    <label class="checkbox-card">
+                        <input type="checkbox" name="condition" value="Kidney/Liver Disease">
+                        <span class="check-label"><i class="fas fa-procdures"></i> Kidney/Liver Issue</span>
+                    </label>
+                    <label class="checkbox-card">
+                        <input type="checkbox" name="condition" value="High Blood Pressure">
+                        <span class="check-label"><i class="fas fa-heartbeat"></i> Hypertension</span>
+                    </label>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label>Prescription Images (Upload Multiple)</label>
                 <label class="file-drop-zone">
-                    <!-- Added 'multiple' attribute here -->
                     <input type="file" id="imageInput" accept="image/*" multiple onchange="handleFileSelect()" hidden />
                     <div class="drop-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>

@@ -52,15 +52,22 @@ function toggleSpeech() {
 
 // UI: Reset the Interface
 function resetForm() {
+    // Inputs
     document.getElementById("imageInput").value = "";
     document.getElementById("description").value = "";
     document.getElementById("fileName").innerText = "Click to Upload Prescription Image(s)";
     document.getElementById("fileName").style.color = "";
+    
+    // Reset Checkboxes
+    const checkboxes = document.querySelectorAll('input[name="condition"]');
+    checkboxes.forEach(cb => cb.checked = false);
 
+    // Sections
     document.getElementById("inputSection").style.display = "block";
     document.getElementById("loading").style.display = "none";
     document.getElementById("results").style.display = "none";
     
+    // Content
     document.getElementById("medsList").innerHTML = "";
     document.getElementById("alertMessage").innerText = "";
     document.getElementById("altList").innerHTML = "";
@@ -70,9 +77,16 @@ function resetForm() {
 async function checkInteractions() {
     const fileInput = document.getElementById("imageInput");
     const descriptionInput = document.getElementById("description");
+    const languageSelect = document.getElementById("languageSelect");
 
-    const files = fileInput.files; // Get FileList
+    const files = fileInput.files; 
     const description = descriptionInput.value.trim();
+
+    // Collect Selected Conditions
+    const conditions = [];
+    document.querySelectorAll('input[name="condition"]:checked').forEach(cb => {
+        conditions.push(cb.value);
+    });
 
     // Validation
     if (files.length === 0 && !description) {
@@ -90,12 +104,19 @@ async function checkInteractions() {
 
     const formData = new FormData();
     
-    // Loop through all selected files and append them
     for (let i = 0; i < files.length; i++) {
         formData.append("image", files[i]);
     }
 
     if (description) formData.append("description", description);
+    
+    // Send Language
+    formData.append("language", languageSelect.value);
+    
+    // Send Conditions (as comma-separated string)
+    if (conditions.length > 0) {
+        formData.append("conditions", conditions.join(", "));
+    }
 
     try {
         const response = await fetch("http://localhost:5000/api/analyze", {

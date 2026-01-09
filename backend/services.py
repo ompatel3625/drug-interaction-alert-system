@@ -12,9 +12,9 @@ RISK_COLORS = {
     "critical": "#b91c1c", "unknown": "#64748b"
 }
 
-def analyze_prescription_image(image_paths, user_text, use_mock=False):
+def analyze_prescription_image(image_paths, user_text, language="English", conditions=None, use_mock=False):
     """
-    Analyzes multiple images + user text.
+    Analyzes multiple images + user text + language + patient conditions.
     """
     if use_mock:
         return get_mock_analysis()
@@ -22,8 +22,9 @@ def analyze_prescription_image(image_paths, user_text, use_mock=False):
     try:
         inputs = []
         
-        # 1. Add Prompt
-        base_prompt = build_prompt(user_text, len(image_paths))
+        # 1. Add Prompt with new Context
+        print(f"DEBUG: Generating prompt for Language: {language}") # Debug print
+        base_prompt = build_prompt(user_text, len(image_paths), language, conditions)
         inputs.append(base_prompt)
 
         # 2. Add All Images
@@ -50,32 +51,52 @@ def process_risk_analysis(data):
     data["risk_hex"] = RISK_COLORS.get(risk_color_name, RISK_COLORS["unknown"])
     return data
 
-def build_prompt(user_text, image_count):
-    """Constructs prompt aware of multiple files."""
+def build_prompt(user_text, image_count, language, conditions):
+    """Constructs prompt aware of language and patient conditions."""
+    
+    # 1. User Notes Context
     context = ""
     if user_text:
         context += f"\nUSER NOTES: '{user_text}'."
+    
+    # 2. Patient Conditions Context (Crucial for safety)
+    condition_instruction = ""
+    if conditions:
+        condition_instruction = f"\nCRITICAL PATIENT CONTEXT: The patient has these conditions: {conditions}. CHECK STRICTLY for contraindications against these."
+
+    # 3. Language Context - MAKE THIS LOUD
+    lang_instruction = ""
+    if language and language.lower() != "english":
+        lang_instruction = f"""
+        IMPORTANT - LANGUAGE REQUIREMENT:
+        The patient speaks {language}. 
+        You MUST translate the 'alert_message' and 'alternatives' values into {language}.
+        However, keep the 'medicines_found' names in English (or standard medical terms).
+        """
     
     file_context = "image" if image_count <= 1 else f"{image_count} different prescription images"
 
     return f"""
     Act as a clinical toxicologist. Analyze this {file_context} and/or user notes.
     {context}
+    {condition_instruction}
+    {lang_instruction}
     
     TASKS:
     1. Read the handwriting/text from ALL images provided.
     2. Identify medicine names from ALL sources.
     3. Check for drug-drug interactions across these different prescriptions.
-    4. Determine Risk Severity (Low, Medium, High, Critical).
-    5. Write a simple alert for the patient.
+    4. Check for contraindications based on the CRITICAL PATIENT CONTEXT provided above.
+    5. Determine Risk Severity (Low, Medium, High, Critical).
+    6. Write a simple alert for the patient.
 
     OUTPUT JSON FORMAT:
     {{
         "medicines_found": ["Meds..."],
         "risk_level": "Level",
         "risk_color": "green/yellow/orange/red",
-        "alert_message": "Simple explanation...",
-        "alternatives": ["Alt 1", "Alt 2"]
+        "alert_message": "Simple explanation translated into {language}...",
+        "alternatives": ["Alt 1 translated into {language}", "Alt 2"]
     }}
     """
 

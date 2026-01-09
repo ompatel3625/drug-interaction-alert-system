@@ -23,10 +23,20 @@ def analyze():
     Analyze endpoint.
     Payload: 
     - image (Multiple Files allowed)
-    - description (String, optional)
+    - description (String)
+    - language (String)
+    - conditions (String)
     """
     use_mock = request.args.get('mock', '').lower() == 'true'
+    
+    # Get Text Inputs
     user_text = request.form.get('description', '')
+    language = request.form.get('language', 'English')
+    conditions = request.form.get('conditions', '')
+
+    # --- DEBUG PRINT ---
+    print(f"Incoming Request -> Language: {language}, Conditions: {conditions}, Text: {user_text}")
+    # -------------------
 
     saved_file_paths = []
 
@@ -36,7 +46,7 @@ def analyze():
 
         # Handle Multiple Images
         if 'image' in request.files:
-            files = request.files.getlist('image') # Get list of all uploaded files
+            files = request.files.getlist('image')
             for file in files:
                 if file.filename != '':
                     file_path = os.path.join(temp_dir, file.filename)
@@ -47,8 +57,14 @@ def analyze():
         if not saved_file_paths and not user_text:
              return jsonify({"error": "Please provide an image or a description."}), 400
 
-        # Process (Pass list of paths)
-        result = analyze_prescription_image(saved_file_paths, user_text, use_mock=use_mock)
+        # Process with Language & Conditions
+        result = analyze_prescription_image(
+            saved_file_paths, 
+            user_text, 
+            language=language, 
+            conditions=conditions, 
+            use_mock=use_mock
+        )
 
         # Cleanup
         for path in saved_file_paths:
@@ -61,7 +77,6 @@ def analyze():
         })
 
     except Exception as e:
-        # Cleanup on error
         for path in saved_file_paths:
             if os.path.exists(path):
                 os.remove(path)
